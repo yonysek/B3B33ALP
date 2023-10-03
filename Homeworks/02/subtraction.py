@@ -5,8 +5,8 @@ from decimal import Decimal, getcontext
 # num1 = input()
 # num2 = input()
 
-num1 = "1.11011e1101"
-num2 = "1.001e-101"
+num1 = "-1.101000001e1111"
+num2 = "-1.11110101101e-111100"
 
 nums = [num1, num2]
 
@@ -53,6 +53,33 @@ for i in range(len(nums)):
 # Make the numbers have same powers
 
 
+def powers_from_bin(power):
+    negative = False
+    if "-" in power:
+        negative = True
+        power = power[1:]
+    power = int(f"0b{power}", 2)
+    if negative:
+        power = int(f"-{power}")
+
+    return power
+
+
+def move_decimal(float_num, power):
+    if power == 0:
+        return str(float_num)
+    float_str = str(float_num)
+
+    integer_part, _, fractional_part = float_str.partition(".")
+
+    if power < 0:
+        adjusted_str = "0." + "0" * abs(abs(power) - 1) + integer_part + fractional_part
+    else:
+        adjusted_str = integer_part + fractional_part + "0" * power
+
+    return adjusted_str
+
+
 def common_power(nums):
     getcontext().prec = 100000
 
@@ -64,17 +91,22 @@ def common_power(nums):
             num_parts.append(nums[i])
             power_parts.append(0)
         else:
-            if nums[i].split("e")[1] == "":
+            if nums[i].split("e")[1] == "" or type(nums[i].split("e")[1]) == float:
                 print("ERROR")
                 return
             num_parts.append(Decimal(nums[i].split("e")[0]))
-            power_parts.append(int(nums[i].split("e")[1]))
+            # power_parts.append(int(nums[i].split("e")[1]))
+            power_parts.append(powers_from_bin(nums[i].split("e")[1]))
 
     max_power = max(power_parts[0], power_parts[1])
 
+    # for i in range(len(num_parts)):
+    #     # if power_parts[i] != 0:
+    #     num_parts[i] *= Decimal("10") ** (power_parts[i] - max_power)
+    #     print(num_parts[i])
+
     for i in range(len(num_parts)):
-        if power_parts[i] != 0:
-            num_parts[i] *= Decimal("10") ** (power_parts[i] - max_power)
+        num_parts[i] = move_decimal(num_parts[i], power_parts[i] - max_power)
 
     return num_parts, power_parts, max_power
 
@@ -85,28 +117,28 @@ num_parts, power_parts, max_power = common_power(nums)
 # We take decimal numbers and put them to a string with 0
 
 
-def e_to_string(num):
-    num = str(num)
+# def e_to_string(num):
+#     num = str(num)
 
-    num = num.replace("E", "e")
+#     num = num.replace("E", "e")
 
-    if "e" not in str(num):
-        return num
+#     if "e" not in str(num):
+#         return num
 
-    string = "0."
-    [num, power] = num.split("e")
-    string += "0" * int((math.fabs(int(power)) - 1))
-    for i in range(len(num)):
-        if num[i] == ".":
-            continue
+#     string = "0."
+#     [num, power] = num.split("e")
+#     string += "0" * int((math.fabs(int(power)) - 1))
+#     for i in range(len(num)):
+#         if num[i] == ".":
+#             continue
 
-        string += num[i]
+#         string += num[i]
 
-    return string
+#     return string
 
 
-for i in range(len(num_parts)):
-    num_parts[i] = e_to_string(num_parts[i])
+# for i in range(len(num_parts)):
+#     num_parts[i] = e_to_string(num_parts[i])
 
 
 # Take the strings and convert them to an array
@@ -171,13 +203,27 @@ def addition(num_arrays):
     return result_arr
 
 
+# def subtraction(num_arrays):
+#     result_arr = []
+
+#     for i in range(max_len - 1, -1, -1):
+#         res = (num_arrays[0][i] - num_arrays[1][i]) % 2
+
+#         result_arr.insert(0, res)
+
+#     return result_arr
+
+
 def subtraction(num_arrays):
     result_arr = []
 
+    carry = 0
     for i in range(max_len - 1, -1, -1):
-        res = (num_arrays[0][i] - num_arrays[1][i]) % 2
+        diff = num_arrays[0][i] - num_arrays[1][i] - carry
+        result_arr.insert(0, diff % 2)
 
-        result_arr.insert(0, res)
+        # Update carry for the next iteration
+        carry = 1 if diff < 0 else 0
 
     return result_arr
 
@@ -234,6 +280,11 @@ for i in range(len(result_arr)):
     result_string += str(result_arr[i])
 
 if max_power != 0:
+    max_power = bin(max_power)
+    if "-" in max_power:
+        max_power = max_power[0] + max_power[3:]
+    else:
+        max_power = max_power[2:]
     result_string += f"e{max_power}"
 
 
