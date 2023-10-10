@@ -1,3 +1,14 @@
+import sys
+
+
+def error():
+    print("ERROR")
+    sys.exit()
+
+
+# input = input()
+input = "eightythree"
+
 num_strings = [
     "one",
     "two",
@@ -64,173 +75,116 @@ nums = [
 
 nums_as_strings = [str(num) for num in nums]
 
+types = ["str", "int"]
 
-error = False
-final_str = ""
+type = "error"
 
-# input = input()
-input = "eightythree"
 
-input_type = ""
-
-for i in range(len(nums)):
-    if str(nums[i]) in input:
-        input_type = "int"
+for i in range(len(num_strings)):
+    if num_strings[i] in input:
+        type = types[0]
         break
-    elif str(num_strings[i]) in input:
-        input_type = "str"
+    elif nums_as_strings[i] in input:
+        type = types[1]
         break
+
+if type == "error":
+    error()
+
+
+def error_check(input, type):
+    if type == "str":
+        for i in range(9):
+            if str(i) in input:
+                error()
+        if "thousand" in input:
+            without_thousand = input.replace("thousand", "", 1)
+            if "thousand" in without_thousand:
+                error()
+    if type == "int":
+        temp_error = False
+        for i in range(len(input)):
+            if temp_error:
+                error()
+            for j in range(9):
+                if str(j) != input[i]:
+                    temp_error = True
+                else:
+                    temp_error = False
+                    break
+
+
+error_check(input, type)
+
+
+def handle_str_hundreds(string):
+    res_str = ""
+    if "hundred" in string:
+        if string.split("hundred")[0] == "":
+            res_str += "1"
+
+        for i in range(0, 9):
+            if num_strings[i] == string.split("hundred")[0]:
+                res_str += str(nums[i])
+        if string.split("hundred")[1] == "":
+            res_str += "00"
+        string = string.split("hundred")[1]
     else:
-        error = True
+        res_str += "0"
 
-valid_num = True
-if input_type == "int":
-    for i in range(len(input)):
-        if input[i] not in nums_as_strings and input[i] != "0":
-            valid_num = False
-            break
+    for i in range(9):
+        if string == num_strings[i]:
+            res_str += f"0{nums[i]}"
+            return res_str
 
-# Basic case
+    for i in range(10, 27):
+        if string == num_strings[i]:
+            res_str += str(nums[i])
+            return res_str
 
-if input_type == "str":
+        if num_strings[i] in string:
+            res_str += str(nums[i])[0]
+            string = string.split(num_strings[i])[1]
+
+            for i in range(9):
+                if string == num_strings[i]:
+                    res_str += str(nums[i])
+                    return res_str
+
+
+def str_to_int(input):
+    final_str = ""
+    # Just one string representation
     for i in range(len(num_strings)):
         if num_strings[i] == input:
             final_str = nums[i]
 
-    def split_number(input):
-        ths = ""
-        rest = input
-        if "thousand" in input:
-            ths, rest = input.split("thousand")
-        return ths, rest
-
-    ths, rest = split_number(input)
-
-    def handle_hundreds(num):
-        global error
-
-        res_str = ""
-        if "hundred" in num:
-            if num.split("hundred")[0] == "":
-                res_str += "1"
-            else:
-                error = True
-                return "69"
-
-            for i in range(0, 9):
-                if num_strings[i] == num.split("hundred")[0]:
-                    res_str += str(nums[i])
-                    error = False
-                else:
-                    error = True
-                    return "69"
-
-            if num.split("hundred")[1] == "":
-                res_str += "00"
-                return res_str
-
-            num = num.split("hundred")[1]
-        else:
-            res_str += "0"
-
-        for i in range(9):
-            if num == num_strings[i]:
-                res_str += f"0{nums[i]}"
-                return res_str
-
-        for i in range(10, 27):
-            if num == num_strings[i]:
-                res_str += str(nums[i])
-                return res_str
-
-            if num_strings[i] in num:
-                res_str += str(nums[i])[0]
-                num = num.split(num_strings[i])[1]
-
-                for i in range(9):
-                    if num == num_strings[i]:
-                        res_str += str(nums[i])
-                        return res_str
-
-        error = True
-        return "69"
-
-    if error != True:
-        final_str = handle_hundreds(rest)
-        if ths != "":
-            final_str = handle_hundreds(ths) + final_str
-
-        arr = list(final_str)
-        while arr[0] == "0":
-            arr.pop(0)
-
-        actually_final_str = ""
-
-        for i in range(len(arr)):
-            actually_final_str += arr[i]
-
-    if error:
-        print("ERROR")
-    else:
-        print(actually_final_str)
-
-elif input_type == "int" and valid_num == True:
+    # Splitting the string with thousands
     ths = ""
-    rest = ""
+    rest = input
+    if "thousand" in input:
+        ths, rest = input.split("thousand")
 
-    if len(input) > 3:
-        rest = input[-3:]
-        ths = input[:-3]
-    else:
-        rest = input
+    if ths == "" and rest == "":
+        final_str = 1000
+        return final_str
 
-    def handle_hundreds(num):
-        res_str = ""
-        if len(num) == 3:
-            for i in range(9):
-                if num[0] == str(nums[i]):
-                    res_str += f"{num_strings[i]}hundred"
-                    break
-            if num[1:] == "00":
-                return res_str
-
-            num = num[1:]
-        if len(num) == 2:
-            for i in range(27):
-                if num == str(nums[i]):
-                    res_str += num_strings[i]
-                    return res_str
-
-            for i in range(2, 10):
-                if num[0] == str(i):
-                    res_str += num_strings[17 + i]
-                    for j in range(9):
-                        if num[1] == str(nums[j]):
-                            res_str += num_strings[j]
-                            return res_str
-                    res_str += "0"
-                    return res_str
-            for i in range(9):
-                if num[1] == str(nums[i]):
-                    res_str += num_strings[i]
-                    return res_str
-
-        if len(num) == 1:
-            for j in range(9):
-                if num[0] == str(nums[j]):
-                    res_str += num_strings[j]
-                    return res_str
-            res_str += "0"
-            return res_str
-
-    final_str = handle_hundreds(rest)
-    print(final_str)
+    if rest != "":
+        final_str = handle_str_hundreds(rest)
     if ths != "":
-        ths = handle_hundreds(ths)
-        final_str = ths + "thousand" + final_str
+        final_str = handle_str_hundreds(ths) + final_str
 
-    print(final_str)
+    arr = list(final_str)
+    while arr[0] == "0":
+        arr.pop(0)
+
+    actually_final_str = ""
+
+    for i in range(len(arr)):
+        actually_final_str += arr[i]
+
+    return actually_final_str
 
 
-else:
-    print("ERROR")
+print(handle_str_hundreds("two"))
+print(str_to_int("twothousand"))

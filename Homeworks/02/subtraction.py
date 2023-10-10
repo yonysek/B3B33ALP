@@ -1,15 +1,18 @@
 import math
 from decimal import Decimal, getcontext
+import sys
+
 
 # Inputs
-# num1 = input()
-# num2 = input()
 
-num1 = "-1.101000001e1111"
-num2 = "-1.11110101101e-111100"
+num1 = input()
+num2 = input()
+
+
+# num1 = "1.011"
+# num2 = "1.11011011001001001e110"
 
 nums = [num1, num2]
-
 
 # Test what operation are we doing
 forms_of_operation = ["n1-n2", "n2-n1", "n1+n2", "-(n1+n2)"]
@@ -50,7 +53,7 @@ for i in range(len(nums)):
         nums[i] = nums[i][1:]
 
 
-# Make the numbers have same powers
+# Converting binary powers to decimal powers
 
 
 def powers_from_bin(power):
@@ -65,6 +68,7 @@ def powers_from_bin(power):
     return power
 
 
+# Moving decimal according to the scientific notation
 def move_decimal(float_num, power):
     if power == 0:
         return str(float_num)
@@ -80,6 +84,65 @@ def move_decimal(float_num, power):
     return adjusted_str
 
 
+def contain_only_one_minus_sign(input_str):
+    minus = False
+    for char in input_str:
+        if minus == False and char == "-":
+            minus = True
+        elif minus == True and char == "-":
+            print("ERROR")
+            sys.exit()
+
+
+def contain_only_one_e(input_str):
+    minus = False
+    for char in input_str:
+        if minus == False and char == "e":
+            minus = True
+        elif minus == True and char == "e":
+            print("ERROR")
+            sys.exit()
+
+
+def contains_only_valid_characters(input_str):
+    valid_characters = set(["-", "0", "1", "e", "."])
+
+    for char in input_str:
+        if char not in valid_characters:
+            return False
+
+    return True
+
+
+for i in range(len(nums)):
+    if contains_only_valid_characters(nums[i]) == False:
+        print("ERROR")
+        sys.exit()
+    contain_only_one_minus_sign(nums[i])
+    contain_only_one_e(nums[i])
+    if nums[i][0] == "0":
+        print("ERROR")
+        sys.exit()
+    if num1 == "" or num2 == "":
+        print("ERROR")
+        sys.exit()
+    if "e" in nums[i] and "." not in nums[i].split("e")[0]:
+        print("ERROR")
+        sys.exit()
+
+# Function to check whether the string contains only valid characters
+
+
+def contains_only_valid_power_characters(input_str):
+    valid_characters = set(["-", "0", "1"])
+
+    for char in input_str:
+        if char not in valid_characters:
+            return False
+
+    return True
+
+
 def common_power(nums):
     getcontext().prec = 100000
 
@@ -91,19 +154,18 @@ def common_power(nums):
             num_parts.append(nums[i])
             power_parts.append(0)
         else:
-            if nums[i].split("e")[1] == "" or type(nums[i].split("e")[1]) == float:
+            if (
+                nums[i].split("e")[1] == ""
+                or contains_only_valid_power_characters(nums[i].split("e")[1]) == False
+            ):
                 print("ERROR")
-                return
+                sys.exit()
+
             num_parts.append(Decimal(nums[i].split("e")[0]))
             # power_parts.append(int(nums[i].split("e")[1]))
             power_parts.append(powers_from_bin(nums[i].split("e")[1]))
 
     max_power = max(power_parts[0], power_parts[1])
-
-    # for i in range(len(num_parts)):
-    #     # if power_parts[i] != 0:
-    #     num_parts[i] *= Decimal("10") ** (power_parts[i] - max_power)
-    #     print(num_parts[i])
 
     for i in range(len(num_parts)):
         num_parts[i] = move_decimal(num_parts[i], power_parts[i] - max_power)
@@ -111,60 +173,40 @@ def common_power(nums):
     return num_parts, power_parts, max_power
 
 
+# TODO Ask whether we just need the first print ERROR and then it can just crash
 num_parts, power_parts, max_power = common_power(nums)
 
 
-# We take decimal numbers and put them to a string with 0
+# Getting rid of decimal dot and padding with zeros
+
+for i in range(len(num_parts)):
+    num_parts[i] = num_parts[i].replace(".", "")
+
+max_len = max(len(num_parts[0]), len(num_parts[1]))
+
+for i in range(len(num_parts)):
+    num_parts[i] += (max_len - len(num_parts[i])) * "0"
 
 
-# def e_to_string(num):
-#     num = str(num)
-
-#     num = num.replace("E", "e")
-
-#     if "e" not in str(num):
-#         return num
-
-#     string = "0."
-#     [num, power] = num.split("e")
-#     string += "0" * int((math.fabs(int(power)) - 1))
-#     for i in range(len(num)):
-#         if num[i] == ".":
-#             continue
-
-#         string += num[i]
-
-#     return string
-
-
-# for i in range(len(num_parts)):
-#     num_parts[i] = e_to_string(num_parts[i])
-
-
-# Take the strings and convert them to an array
-
-
-def numstr_to_arr(numstr):
-    arr = []
-    for i in range(len(numstr)):
-        if numstr[i] == ".":
-            continue
-
-        arr.append(int(numstr[i]))
-    return arr
-
+# Convert the strings to arrays because we need to have numbers inside
 
 num_arrays = []
 
 for i in range(len(num_parts)):
-    num_arrays.append(numstr_to_arr(num_parts[i]))
+    arr = []
+    for j in range(len(num_parts[i])):
+        arr.append(int(num_parts[i][j]))
+    num_arrays.append(arr)
 
-max_len = max(len(num_arrays[0]), len(num_arrays[1]))
 
-for i in range(len(num_arrays)):
-    num_arrays[i].extend([0] * (max_len - len(num_arrays[i])))
+# print(num_parts[0])
+# print(num_parts[1])
+# print(num_arrays[0])
+# print(num_arrays[1])
+# print(len(num_parts[0]))
 
-# Now we compare the numbers
+
+# We now need to compare the numbers
 
 
 def compare_binary_numbers(num_arrays):
@@ -172,12 +214,14 @@ def compare_binary_numbers(num_arrays):
         bit1 = int(num_arrays[0][i])
         bit2 = int(num_arrays[1][i])
 
+        # If we are dealing with subtraction and the first number is smaller than the second number, we need to add minus sign to the expression at the end
         if bit1 > bit2:
             return 0
         elif bit1 < bit2:
             return 1
 
-    return "Equal"
+    print(0)
+    sys.exit()
 
 
 bigger_num_index = compare_binary_numbers(num_arrays)
@@ -186,6 +230,8 @@ bigger_num_index = compare_binary_numbers(num_arrays)
 def addition(num_arrays):
     result_arr = []
     carry = 0
+
+    max_len = max(len(num_arrays[0]), len(num_arrays[1]))
 
     for i in range(max_len - 1, -1, -1):
         bit1 = int(num_arrays[0][i])
@@ -203,40 +249,31 @@ def addition(num_arrays):
     return result_arr
 
 
-# def subtraction(num_arrays):
-#     result_arr = []
-
-#     for i in range(max_len - 1, -1, -1):
-#         res = (num_arrays[0][i] - num_arrays[1][i]) % 2
-
-#         result_arr.insert(0, res)
-
-#     return result_arr
-
-
 def subtraction(num_arrays):
     result_arr = []
-
+    max_len = max(len(num_arrays[0]), len(num_arrays[1]))
     carry = 0
     for i in range(max_len - 1, -1, -1):
         diff = num_arrays[0][i] - num_arrays[1][i] - carry
+        if diff < 0:
+            diff += 2
+            carry = 1
+        else:
+            carry = 0
         result_arr.insert(0, diff % 2)
-
-        # Update carry for the next iteration
-        carry = 1 if diff < 0 else 0
-
     return result_arr
 
 
-# Now we need to figure out which operation to use and get result
 def calculate(num_arrays):
     global max_power
 
     if type_of_operation == types_of_operation[0]:
         result_arr = addition(num_arrays)
         if len(result_arr) > max_len:
-            max_power = int(max_power) - 1
+            max_power = int(max_power) + 1
     else:
+        if bigger_num_index == 1:
+            num_arrays[0], num_arrays[1] = num_arrays[1], num_arrays[0]
         result_arr = subtraction(num_arrays)
 
     return result_arr
@@ -244,23 +281,27 @@ def calculate(num_arrays):
 
 result_arr = calculate(num_arrays)
 
+# print(result_arr)
+# print(len(result_arr))
+
+
+# TODO Here it should be like somehow working but I wouldn't bet my life on it
+
 # Delete zeros at the end
 
 for i in range(len(result_arr) - 1, 0, -1):
-    if result_arr[i] == 0:
+    if int(result_arr[i]) == 0:
         result_arr.pop()
     else:
         break
 
-
 # Deleting zeros at the start
-
 
 while True:
     i = 0
     if result_arr[i] == 0:
         result_arr.pop(i)
-        max_power += 1
+        max_power -= 1
         if i != len(result_arr):
             i += 1
         else:
@@ -268,16 +309,20 @@ while True:
     else:
         break
 
+# Adding the decimal point
+
 if len(result_arr) != 1:
     result_arr.insert(1, ".")
+
 
 # Create the result string
 
 result_string = ""
 
-
 for i in range(len(result_arr)):
     result_string += str(result_arr[i])
+
+# Adding the exponent in binary and handling the sign
 
 if max_power != 0:
     max_power = bin(max_power)
@@ -296,7 +341,5 @@ if form_of_operation == forms_of_operation[3]:
 elif type_of_operation == types_of_operation[1] and bigger_num_index == 1:
     result_string = "-" + result_string
     print(result_string)
-elif bigger_num_index == "Equal":
-    print(0)
 else:
     print(result_string)
