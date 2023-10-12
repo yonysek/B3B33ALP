@@ -1,5 +1,5 @@
-# nums = list(map(int, input().split()))
-nums = list(map(int, "-2 -3 4 -1 -2 1 5".split()))
+nums = list(map(int, input().split()))
+# nums = list(map(int, "-2 -3 4 -1 -2 1 5".split()))
 
 
 # cur_length = 0
