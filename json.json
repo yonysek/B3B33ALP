@@ -1,0 +1,17 @@
+{
+  "macros": {
+    "\\suminf": "\\sum_{n=0}^\\infin",
+    "\\liminf": "\\lim_{x\\to \\infin}",
+    "\\sumn": "\\sum_{i = 1}^n",
+    "\\sumc": "\\sum_{i=#1}^#2",
+    "\\part": "\\frac {\\partial #1}{\\partial #2}",
+    "\\intr": "\\int\\limits_{#1}",
+    "\\ointr": "\\oint\\limits_{#1}",
+    "\\del": "\\partial",
+    "\\fle": "\\textit{{Fle}f}(#1)",
+    "\\span": "\\text{{span}}(#1)",
+    "\\lin": "\\bold{{f}}: L_1 \\to L_2",
+    "\\F": "\\Bbb F",
+    "\\matrix": "\\begin{pmatrix} #1 \\end{pmatrix}"
+  }
+}

@@ -27,3 +27,5 @@ for i, num in enumerate(lst):
 
 
 print(largest_array[2], largest_array[3])
+
+print()
