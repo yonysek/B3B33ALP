@@ -2,6 +2,7 @@
   "macros": {
     "\\suminf": "\\sum_{n=0}^\\infin",
     "\\liminf": "\\lim_{x\\to \\infin}",
+    "\\limn": "\\lim_{#1\\to #2}",
     "\\sumn": "\\sum_{i = 1}^n",
     "\\sumc": "\\sum_{i=#1}^#2",
     "\\part": "\\frac {\\partial #1}{\\partial #2}",

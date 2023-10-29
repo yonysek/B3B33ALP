@@ -140,7 +140,151 @@ jump from f6 to h8
 
 f8 d6 b4 e1 h4 f6 h8 
 
-starting position of stone 2: d6
+starting position of stone 2: h4
+
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 3 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 3 0  5
+4  0 0 0 0 0 0 0 2  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 
+
+jump from h4 to e7
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 3 0 2 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 e7 
+
+starting position of stone 3: h4
+
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 3 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 3 0  5
+4  0 0 0 0 0 0 0 2  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 
+
+jump from h4 to d8
+   a b c d e f g h
+8  0 0 0 2 0 0 0 0  8
+7  0 0 3 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 d8 
+
+jump from d8 to b6
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 2 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 d8 b6 
+
+jump from b6 to f2
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 0 0 2 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 d8 b6 f2 
+
+starting position of stone 4: d8
+
+   a b c d e f g h
+8  0 0 0 2 0 0 0 0  8
+7  0 0 3 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 d8 
+
+jump from d8 to a5
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  2 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 3 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 b4 e1 h4 d8 a5 
+
+starting position of stone 5: d6
+
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 3 0 0 0 4 0  7
+6  0 0 0 2 0 0 0 0  6
+5  0 0 3 0 0 0 3 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 3 0 3 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 
+
+jump from d6 to a3
+   a b c d e f g h
+8  0 0 0 0 0 0 0 0  8
+7  0 0 3 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 3 0  5
+4  0 0 0 0 0 0 0 0  4
+3  2 0 0 0 3 0 3 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 0 0 2 0  1
+   a b c d e f g h
+
+f8 d6 a3 
+
+starting position of stone 6: d6
 
    a b c d e f g h
 8  0 0 0 0 0 0 0 0  8
@@ -183,7 +327,7 @@ jump from h2 to b8
 
 f8 d6 h2 b8 
 
-starting position of stone 3: f8
+starting position of stone 7: f8
 
    a b c d e f g h
 8  0 0 0 0 0 2 0 0  8
@@ -254,7 +398,7 @@ jump from b8 to h2
 
 f8 h6 f4 b8 h2 
 
-starting position of stone 4: f4
+starting position of stone 8: f4
 
    a b c d e f g h
 8  0 0 0 0 0 0 0 0  8
@@ -297,7 +441,7 @@ jump from h2 to b8
 
 f8 h6 f4 h2 b8 
 
-starting position of stone 5: a1
+starting position of stone 9: a1
 
    a b c d e f g h
 8  0 0 0 0 0 2 0 0  8
@@ -312,7 +456,7 @@ starting position of stone 5: a1
 
 a1 
 
-starting position of stone 6: c1
+starting position of stone 10: c1
 
    a b c d e f g h
 8  0 0 0 0 0 2 0 0  8
@@ -327,7 +471,7 @@ starting position of stone 6: c1
 
 c1 
 
-starting position of stone 7: g1
+starting position of stone 11: g1
 
    a b c d e f g h
 8  0 0 0 0 0 2 0 0  8
@@ -412,7 +556,7 @@ jump from f6 to h8
 
 g1 d4 b6 d8 f6 h8 
 
-starting position of stone 8: f6
+starting position of stone 12: f6
 
    a b c d e f g h
 8  0 0 0 0 0 2 0 0  8
@@ -455,7 +599,151 @@ jump from h4 to f2
 
 g1 d4 b6 d8 f6 h4 f2 
 
-starting position of stone 9: d4
+starting position of stone 13: h4
+
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 2  4
+3  0 0 0 0 0 0 3 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 
+
+jump from h4 to e1
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 2 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 
+
+jump from e1 to c3
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 2 0 0 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 c3 
+
+jump from c3 to h8
+   a b c d e f g h
+8  0 0 0 0 0 2 0 2  8
+7  0 0 0 0 0 0 0 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 c3 h8 
+
+starting position of stone 14: e1
+
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 2 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 
+
+jump from e1 to b4
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 2 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 b4 
+
+starting position of stone 15: e1
+
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 2 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 
+
+jump from e1 to a5
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 0 0 0 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  2 0 0 0 0 0 0 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 0 0  3
+2  0 0 0 0 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 b6 d8 f6 h4 e1 a5 
+
+starting position of stone 16: d4
+
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  0 0 3 0 3 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 3 0 0 0 3 0  5
+4  0 0 0 2 0 0 0 0  4
+3  0 0 0 0 0 0 3 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 
+
+jump from d4 to a7
+   a b c d e f g h
+8  0 0 0 0 0 2 0 0  8
+7  2 0 3 0 3 0 4 0  7
+6  0 0 0 0 0 0 0 0  6
+5  0 0 0 0 0 0 3 0  5
+4  0 0 0 0 0 0 0 0  4
+3  0 0 0 0 0 0 3 0  3
+2  0 0 0 3 0 0 0 0  2
+1  1 0 1 0 0 0 0 0  1
+   a b c d e f g h
+
+g1 d4 a7 
+
+starting position of stone 17: d4
 
    a b c d e f g h
 8  0 0 0 0 0 2 0 0  8
