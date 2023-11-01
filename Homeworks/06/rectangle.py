@@ -1,5 +1,33 @@
-# Python3 program to find maximum
-# rectangular area in linear time
+# projizdime pole odspodu a hledame zaporna cisla a pak pricitima kdyz nad nima je neco jako zaporne
+import sys
+
+f = open(sys.argv[1], "rt")
+
+# f = open("B3B33ALP/Homeworks/06/matrix.txt", "rt")
+
+# Read the contents of the file
+contents = f.read()
+
+# Split the contents into rows
+rows = contents.strip().split("\n")
+
+# Split each row into columns
+matrix = [list(map(int, row.split())) for row in rows]
+
+
+def matrix_to_histograms(matrix):
+    histogram_matrix = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+    for i in range(len(matrix) - 1, -1, -1):
+        for j in range(len(matrix[i])):
+            if matrix[i][j] < 0:
+                if i < len(matrix) - 1:
+                    histogram_matrix[i][j] = histogram_matrix[i + 1][j] + 1
+                else:
+                    histogram_matrix[i][j] = 1
+    return histogram_matrix
+
+
+histogram_matrix = matrix_to_histograms(matrix)
 
 
 def max_area_histogram(histogram):
@@ -15,6 +43,9 @@ def max_area_histogram(histogram):
     stack = list()
 
     max_area = 0  # Initialize max area
+    l_index = ""
+    r_index = ""
+    height = 0
 
     # Run through all bars of
     # given histogram
@@ -46,7 +77,12 @@ def max_area_histogram(histogram):
             )
 
             # update max area, if needed
-            max_area = max(max_area, area)
+            # max_area = max(max_area, area)
+            if area > max_area:
+                max_area = area
+                l_index = stack[-1] + 1 if stack else 0
+                r_index = index - 1
+                height = histogram[top_of_stack]
 
     # Now pop the remaining bars from
     # stack and calculate area with
@@ -61,19 +97,29 @@ def max_area_histogram(histogram):
         area = histogram[top_of_stack] * ((index - stack[-1] - 1) if stack else index)
 
         # update max area, if needed
-        max_area = max(max_area, area)
+        # max_area = max(max_area, area)
+        if area > max_area:
+            max_area = area
+            l_index = stack[-1] + 1 if stack else 0
+            r_index = index - 1
+            height = histogram[top_of_stack]
 
     # Return maximum area under
     # the given histogram
-    return max_area
+    return max_area, l_index, r_index, height
 
 
-# Driver Code
-if __name__ == "__main__":
-    hist = [4, 3, 5, 6, 2]
+max_area = 0
+max_coords = []
 
-    # Function call
-    print("Maximum area is", max_area_histogram(hist))
+for i in range(len(histogram_matrix)):
+    row_max_area, l_index, r_index, height = max_area_histogram(histogram_matrix[i])
+    # max_area = max(max_area, row_max_area)
+    coords = [[i, l_index], [i + height - 1, r_index]]
+    if row_max_area > max_area:
+        max_area = row_max_area
+        max_coords = coords
 
-# This code is contributed
-# by Jinay Shah
+
+print(max_coords[0][0], max_coords[0][1])
+print(max_coords[1][0], max_coords[1][1])
