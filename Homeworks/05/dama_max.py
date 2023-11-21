@@ -98,7 +98,6 @@ def available_moves(board, stone):
             and board[coords[0] - 1][coords[1] - 1] in [3, 4]
             and board[coords[0] - 2][coords[1] - 2] == 0
         ):
-            # print("Available move: ", coords[0] - 2, coords[1] - 2)
             available_moves.append([coords[0] - 2, coords[1] - 2])
         if (
             coords[0] - 2 >= 0
@@ -106,7 +105,6 @@ def available_moves(board, stone):
             and board[coords[0] - 1][coords[1] + 1] in [3, 4]
             and board[coords[0] - 2][coords[1] + 2] == 0
         ):
-            # print("Available move: ", coords[0] - 2, coords[1] + 2)
             available_moves.append([coords[0] - 2, coords[1] + 2])
         if available_moves == []:
             return None
@@ -341,7 +339,7 @@ def distance(stone):
 
 max_len = 0
 max_distance = 0
-the_stone = []
+t
 
 
 for i in range(len(stones)):
