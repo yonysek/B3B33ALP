@@ -137,6 +137,9 @@ def place_stones():
     i = 0
 
     while not board_is_full():
+        if i == len(stones):
+            return False
+
         if (p, q, i) not in tried_rotations:
             tried_rotations[(p, q, i)] = []
 
@@ -199,8 +202,9 @@ def remove_stone(i, placed_stones):
 
 
 def save_progress():
-    board.save_image("progress.png")
+    # board.save_image("progress.png")
     # time.sleep(0.05)
+    pass
 
 
 def board_is_full():
@@ -247,9 +251,6 @@ def place_stone(stone, i, row, col):
         pivot = stone[0]
         for cell in stone:
             board.board[row + cell[0] - pivot[0]][col + cell[1] - pivot[1]] = i + 1
-
-
-board.save_image("final.png")
 
 
 solution = place_stones()
