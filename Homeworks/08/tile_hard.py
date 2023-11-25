@@ -175,7 +175,8 @@ def place_stones():
 
                     for p in game_board.keys():
                         for q in game_board[p].keys():
-                            del tried_rotations[(p, q, i)]
+                            if (p, q, i) in tried_rotations:
+                                del tried_rotations[(p, q, i)]
 
                     i -= 1
                     p, q = placed_stones[i]
@@ -199,7 +200,7 @@ def remove_stone(i, placed_stones):
 
 def save_progress():
     board.save_image("progress.png")
-    time.sleep(0.05)
+    # time.sleep(0.05)
 
 
 def board_is_full():
