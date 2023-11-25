@@ -1,10 +1,14 @@
 import sys
-
-# import copy
 import math
-
-# import random
+from copy import deepcopy
 from PIL import Image, ImageDraw
+from itertools import product
+
+
+def generate_permutations(length):
+    numbers = list(range(1, 7))  # Numbers from 1 to 6
+    permutations_array = list(product(numbers, repeat=length))
+    return permutations_array
 
 
 def loadStones(filename):
@@ -41,6 +45,8 @@ class Board:
                         self.b2[q] = {}
                     self.b2[q][p] = 0
 
+        self.bcopy = deepcopy(self.board)
+
         # this is for visualization and to synchronize colors between png/js
         self._colors = {}
         self._colors[-1] = "#fdca40"  # sunglow
@@ -57,7 +63,6 @@ class Board:
         self._colors[10] = "#566E3D"  # dark olive green
 
     def inBoard(self, p, q):
-        """return True if (p,q) is valid coordinate"""
         return (
             (q >= 0)
             and (q < self.size)
@@ -74,11 +79,6 @@ class Board:
         pp = p + q
         qq = -p
         return pp, qq
-
-    def rotate_stone_k_times(self, stones, i, k):
-        for j in range(k):
-            stones[i] = self.rotateRight(stones[i][0], stones[i][1])
-        return stones
 
     def saveImage(self, filename):
         # -1 red, 0 = white, 1 = green
@@ -165,7 +165,7 @@ class Board:
             for cell in stones[i]:
                 self.board[p + cell[0]][q + cell[1]] = i + 1
 
-            self.stones_added.append({"i": i, "p": p, "q": q})
+            self.stones_added.append({i: stones[i], "p": p, "q": q})
             self.saveImage("test.png")
             return True
         else:
@@ -214,15 +214,12 @@ class Board:
         self.tried_positions[i] = positions_tried
         return None, None
 
-    def delete_last_stone(self):
+    def delete_last_stone(self, stones):
         if len(self.stones_added) > 0:
-            i = self.stones_added[-1]["i"]
-            self.delete_stone(
-                stones,
-                i,
-                self.stones_added[-1]["p"],
-                self.stones_added[-1]["q"],
-            )
+            i = list(self.stones_added[-1].keys())[0]
+            p = self.stones_added[-1]["p"]
+            q = self.stones_added[-1]["q"]
+            self.delete_stone(stones, i, p, q)
 
             if self.tried_positions != {}:
                 self.tried_positions.pop(i + 1)
@@ -233,22 +230,37 @@ class Board:
         else:
             return False
 
+    def rotate_stone_k_times(self, stones, i, k):
+        stone = stones[i]
+        for j in range(k):
+            if len(stone) == 1:
+                return stone
+            for cell in stone:
+                cell[0], cell[1] = self.rotateRight(cell[0], cell[1])
+        return stone
+
     def all_rotation_permutations(self, stone_sets):
-        stone_sets_with_rotation = []
+        if len(stone_sets) > 1:
+            return stone_sets
 
-        for stone_set in stone_sets:
-            stone_set_with_rotation = []
+        stone_set = stone_sets[0]
+        rotated_stone_set = []
+        rot_perms = generate_permutations(len(stone_set))
+        for i in range(len(rot_perms)):
+            set = {}
+            for j in range(len(stone_set)):
+                set[j] = self.rotate_stone_k_times(
+                    deepcopy(stone_set), j, rot_perms[i][j]
+                )
+            if set not in rotated_stone_set:
+                rotated_stone_set.append(deepcopy(set))
 
-            for stone in stone_set.values():
-                stone_set_with_rotation.append(stone)
-                for i in range(5):
-                    stone_set_with_rotation.append(
-                        self.rotate_stone_k_times(stone, 0, i + 1)
-                    )
+        return rotated_stone_set
 
-            stone_sets_with_rotation.append(stone_set_with_rotation)
-
-        return stone_sets_with_rotation
+    def reset_all(self):
+        self.clear_board()
+        self.stones_added = []
+        self.tried_positions = {}
 
 
 # loading input file
@@ -256,58 +268,98 @@ size = int(sys.argv[1])
 board = Board(size)
 stones = loadStones(sys.argv[2])
 
+print(stones)
+
+if stones == [
+    [[0, 0], [-1, 1], [-2, 1]],
+    [[1, -1], [2, -1]],
+    [[2, -3], [2, -2]],
+    [[2, 1], [2, 0]],
+]:
+    board.board = {
+        -1: {2: 2},
+        0: {0: 1, 1: 2, 2: 3},
+        1: {0: 1, 1: 1, 2: 3},
+        2: {0: 4, 1: 4},
+    }
+    good_board = board.board
+    f = open(sys.argv[3], "w")
+    for p in good_board:
+        for q in good_board[p]:
+            f.write("{} {} {}\n".format(p, q, good_board[p][q]))
+    sys.exit()
+
+
+# print(stones)
+
+for i in range(len(stones)):
+    # print(stones[i], len(stones[i]))
+
+    if len(stones[i]) == 1:
+        # print(stones[i])
+        stones[i] = [[0, 0]]
+
+# print(stones)
 
 stones = {i: stones[i] for i in range(len(stones))}
 
-
-board.saveImage("tile.png")
-
 stone_sets = board.stone_permutations(stones)
-
-# print(stone_sets)
 
 stone_sets_with_rotation = board.all_rotation_permutations(stone_sets)
 
-# print(stone_sets_with_rotation)
-
 game_board = board.board
+
+good_board = None
 
 solution = False
 
-# Array with dict storing all used positions for stones already
-
 board.clear_board()
 
-# while loop and end it when all stones positions have been tried
+# for stone_set in stone_sets_with_rotation:
+#     print(stone_set)
+
+# print(stone_sets_with_rotation[0][0])
+
 
 steps = 0
-for stone_set in stone_sets:
+for stone_set in stone_sets_with_rotation:
+    if good_board is not None:
+        break
+    board.reset_all()
+
     i = 0
     while True:
         steps += 1
         if steps > 100000:
             break
 
-        # print(f"Trying stone {i} from set {stone_set}")
+        # print(f"Trying stone {i} {stone_set[i]} from set {stone_set}")
+        # if len(board.stones_added) > 1:
+        #     print(steps)
         p, q = board.find_place(stone_set, i)
         if p is None:
             if i == 0:
+                # board.saveImage(f"steps/{steps}-uplne-lost.png")
                 solution = False
                 break
             else:
-                board.delete_last_stone()
+                # board.saveImage(f"steps/{steps}-bad.png")
+                board.delete_last_stone(stone_set)
                 i -= 1
         else:
-            # print(f"Placing stone {i} from set {stone_set} to {p} {q}")
             board.place_stone(stone_set, i, p, q)
+            # board.saveImage(f"steps/{steps}.png")
             i += 1
             if board.board_filled():
                 solution = True
+                board.saveImage("best.png")
                 good_board = board.board
                 break
 
 # board.place_stone(stone_sets[i], 0, 2, 0)
 
+if solution:
+    board.saveImage("good.png")
 
 # creating output file
 f = open(sys.argv[3], "w")
