@@ -13,6 +13,7 @@
     "\\span": "\\text{{span}}(#1)",
     "\\lin": "\\bold{{f}}: L_1 \\to L_2",
     "\\F": "\\Bbb F",
-    "\\matrix": "\\begin{pmatrix} #1 \\end{pmatrix}"
+    "\\matrix": "\\begin{pmatrix} #1 \\end{pmatrix}",
+    "\\proj": "\\text{{proj}}_{#1}(#2)"
   }
 }

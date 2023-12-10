@@ -203,7 +203,7 @@ def remove_stone(i, placed_stones):
 
 def save_progress():
     # board.save_image("progress.png")
-    # time.sleep(0.05)
+    # time.sleep(1)
     pass
 
 
