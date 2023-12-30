@@ -375,81 +375,8 @@ class Player(Base.Board):
 
         return moves
 
-    def findQueen(self):
-        animal = "q"
-        if self.isUpper:
-            animal = animal.lower()
-        else:
-            animal = animal.upper()
-
-        for p in self.board:
-            for q in self.board[p]:
-                if animal in self.board[p][q]:
-                    return p, q
-
-        return None, None
-
-    def valueTiles(self, p, q, depth=0, values={}, direction=0, org=True):
-        if values == {}:
-            values = copy.deepcopy(self.board)
-            for i in values:
-                for j in values[i]:
-                    values[i][j] = -1
-
-            values[p][q] = 0
-            for i in range(6):
-                p1 = p + self.direction[i][0]
-                q1 = q + self.direction[i][1]
-                self.valueTiles(p1, q1, depth + 1, values, i, True)
-
-            return values
-
-        if not self.inBoard(p, q):
-            return
-
-        values[p][q] = depth
-
-        dir1 = self.direction[direction % 6]
-        dir2 = self.direction[(direction + 1) % 6]
-        p1 = p + dir1[0]
-        q1 = q + dir1[1]
-
-        p2 = p + dir2[0]
-        q2 = q + dir2[1]
-
-        self.valueTiles(p1, q1, depth + 1, values, direction, org)
-
-        if org:
-            self.valueTiles(p2, q2, depth + 1, values, direction + 1, False)
-
-    def getBestMove(self, moves):
-        bestMove = []
-        pQ, qQ = self.findQueen()
-        if pQ is None or qQ is None:
-            return bestMove
-        tileValues = self.valueTiles(pQ, qQ)
-        bestValue = -1
-        for i in moves:
-            p, q = i
-            value = tileValues[p][q]
-            if value in [0, 1]:
-                continue
-            curMoves = moves[i]
-            for j in curMoves:
-                newP, newQ = j
-                newValue = tileValues[newP][newQ]
-                delta = value - newValue
-                if delta > bestValue:
-                    bestValue = delta
-                    bestMove = [p, q, newP, newQ]
-
-        return bestMove
-
     def random(self):
         type = None
-
-        # print(self.valueTiles(pQ, qQ))
-        # print(self.board)
 
         allMyCells = self.getAllMyCells()
         moves = {}
@@ -476,23 +403,9 @@ class Player(Base.Board):
         if type == "place":
             animal = self.getRandomPiece()
             p, q = self.randomlyPlace()
-            if p is None and q is None:
-                type = "move"
-
-            if type == "place":
-                return [animal, None, None, p, q]
+            return [animal, None, None, p, q]
 
         if type == "move":
-            bestMove = self.getBestMove(moves)
-            if len(bestMove) != 0:
-                return [
-                    self.board[bestMove[0]][bestMove[1]][-1],
-                    bestMove[0],
-                    bestMove[1],
-                    bestMove[2],
-                    bestMove[3],
-                ]
-
             for i in moves:
                 if len(moves[i]) != 0:
                     p, q = i
