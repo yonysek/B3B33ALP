@@ -10,7 +10,7 @@ smallFigures = {
 }
 bigFigures = {figure.upper(): smallFigures[figure] for figure in smallFigures}
 
-self = Player("player1", False, 13, smallFigures, bigFigures)
+self = Player("player1", False, 13, bigFigures, smallFigures)
 
 self.board = {
     -6: {12: ""},
@@ -41,7 +41,7 @@ self.board = {
         6: "",
         7: "",
         8: "",
-        9: "G",
+        9: "",
         10: "",
         11: "",
         12: "",
@@ -55,7 +55,7 @@ self.board = {
         5: "",
         6: "",
         7: "",
-        8: "B",
+        8: "",
         9: "",
         10: "",
         11: "",
@@ -67,11 +67,11 @@ self.board = {
         2: "",
         3: "",
         4: "",
-        5: "S",
-        6: "s",
-        7: "Q",
-        8: "B",
-        9: "S",
+        5: "",
+        6: "g",
+        7: "",
+        8: "",
+        9: "",
         10: "",
         11: "",
         12: "",
@@ -83,9 +83,9 @@ self.board = {
         3: "",
         4: "",
         5: "",
-        6: "",
-        7: "ab",
-        8: "a",
+        6: "g",
+        7: "G",
+        8: "s",
         9: "",
         10: "",
         11: "",
@@ -97,9 +97,9 @@ self.board = {
         2: "",
         3: "",
         4: "",
-        5: "g",
+        5: "",
         6: "",
-        7: "A",
+        7: "Q",
         8: "",
         9: "",
         10: "",
@@ -111,10 +111,10 @@ self.board = {
         1: "",
         2: "",
         3: "",
-        4: "G",
-        5: "q",
-        6: "g",
-        7: "",
+        4: "q",
+        5: "A",
+        6: "B",
+        7: "A",
         8: "",
         9: "",
         10: "",
@@ -127,9 +127,9 @@ self.board = {
         2: "",
         3: "",
         4: "",
-        5: "A",
+        5: "a",
         6: "",
-        7: "",
+        7: "a",
         8: "",
         9: "",
         10: "",
@@ -156,14 +156,14 @@ self.board = {
     11: {0: "", 1: "", 2: "", 3: ""},
     12: {0: "", 1: ""},
 }
-self.myMove = 18
-self.myPieces = {"q": 0, "a": 0, "b": 1, "s": 1, "g": 0}
-self.rivalPieces = {"Q": 0, "A": 0, "B": 0, "S": 0, "G": 0}
-self.myColorIsUpper = False
-self.tournament = 0
-# self.saveImage("original.png")
+self.myMove = 9
+self.myPieces = {"Q": 0, "A": 0, "B": 1, "S": 2, "G": 1}
+self.rivalPieces = {"q": 0, "a": 0, "b": 2, "s": 1, "g": 0}
+self.myColorIsUpper = True
+self.tournament = True
+self.saveImage("original.png")
 
-P2 = Player("player2", False, 13, bigFigures, smallFigures)
+P2 = Player("player2", False, 13, smallFigures, bigFigures)
 
 steps = 0
 while steps < 100:

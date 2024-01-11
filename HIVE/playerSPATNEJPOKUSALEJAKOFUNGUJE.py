@@ -11,10 +11,7 @@ class Player(Base.Board):
             self, myIsUpper, size, myPieces, rivalPieces
         )  # do not change this line
         self.playerName = playerName
-        # self.algorithmName = '<iframe src="https:igiphycomOWcyDWn398ftewebp" width="10000" height="10000" frameborder="0" class="giphy-embed"></iframe>'
-        self.algorithmName = (
-            '<img src="https://media1.tenor.com/m/3lfExRKWHkgAAAAC/honey-no.gif">'
-        )
+        self.algorithmName = "honey"
         self.isUpper = myIsUpper
 
         self.allies = [i for i in self.myPieces]
@@ -460,6 +457,20 @@ class Player(Base.Board):
 
         return values
 
+    def asignValue(self, animal):
+        animal = animal.lower()
+        value = 0
+        if animal == "a":
+            value = 3
+        elif animal == "b":
+            value = 8
+        elif animal == "s":
+            value = 7
+        elif animal == "g":
+            value = 5
+
+        return value
+
     def getBestMove(self, moves):
         bestMove = []
         pQ, qQ = self.findQueen()
@@ -468,27 +479,59 @@ class Player(Base.Board):
         tileValues = self.valueTiles(pQ, qQ)
         tileValues = self.devalueAroundQueen(tileValues)
         bestValue = -1
+        print(tileValues)
         for i in moves:
-            p, q = i
-            value = tileValues[p][q]
-            if value in [0, 1]:
-                continue
+            if type(i) is str:
+                p, q = None, None
+            else:
+                p, q = i
+
+            if p is not None:
+                value = tileValues[p][q]
+                if self.board[p][q][-1] == "Q" or self.board[p][q][-1] == "q":
+                    value += 10
+                if value in [0, 1]:
+                    continue
+            else:
+                value = self.asignValue(i)
+
             curMoves = moves[i]
             for j in curMoves:
                 newP, newQ = j
                 newValue = tileValues[newP][newQ]
                 delta = value - newValue
-                if delta > bestValue:
-                    bestValue = delta
-                    bestMove = [p, q, newP, newQ]
+                absDelta = delta
+                print(i, j, delta, absDelta)
+                if absDelta > bestValue:
+                    bestValue = absDelta
+                    bestMove = [p, q, newP, newQ, i]
 
         return bestMove
 
-    def random(self):
-        type = None
+    def allPlacements(self):
+        placements = {}
 
-        # print(self.valueTiles(pQ, qQ))
-        # print(self.board)
+        for i in self.myPieces:
+            if self.myPieces[i] == 0:
+                continue
+            placements[i] = []
+            for p in self.board:
+                for q in self.board[p]:
+                    if self.validPlacement(p, q):
+                        placements[i].append([p, q])
+        return placements
+
+    def randomAvailableAnimal(self):
+        availableAnimals = [i for i in self.myPieces if self.myPieces[i] > 0]
+        if len(availableAnimals) == 0:
+            return False
+        animal = availableAnimals[random.randint(0, len(availableAnimals) - 1)]
+        return animal
+
+    def random(self):
+        # type = None
+
+        placements = self.allPlacements()
 
         allMyCells = self.getAllMyCells()
         moves = {}
@@ -497,56 +540,43 @@ class Player(Base.Board):
             move = self.getValidMoves(p, q)
             moves[(p, q)] = move
 
-        if self.getRandomPiece():
-            if len(moves) != 0:
-                rand = random.randint(0, 1)
-                if rand == 0:
-                    type = "place"
-                else:
-                    type = "move"
-            else:
-                type = "place"
-        else:
-            type = "move"
+        allMoves = moves.copy()
+        allMoves.update(placements)
 
-        if self.myMove == 3:
-            type = "place"
-
-        if type == "place":
+        if self.myMove in [3]:
             animal = self.getRandomPiece()
             p, q = self.randomlyPlace()
-            if p is None and q is None:
-                type = "move"
+            return [animal, None, None, p, q]
 
-            if type == "place":
-                return [animal, None, None, p, q]
-
-        if type == "move":
-            bestMove = self.getBestMove(moves)
-            if len(bestMove) != 0:
+        # if type == "move":
+        bestMove = self.getBestMove(allMoves)
+        if len(bestMove) != 0:
+            if bestMove[0] is None and bestMove[1] is None:
                 return [
-                    self.board[bestMove[0]][bestMove[1]][-1],
-                    bestMove[0],
-                    bestMove[1],
+                    bestMove[4],
+                    None,
+                    None,
                     bestMove[2],
                     bestMove[3],
                 ]
+            return [
+                self.board[bestMove[0]][bestMove[1]][-1],
+                bestMove[0],
+                bestMove[1],
+                bestMove[2],
+                bestMove[3],
+            ]
 
-            for i in moves:
-                if len(moves[i]) != 0:
-                    p, q = i
-                    break
+        for i in moves:
+            if len(moves[i]) != 0:
+                p, q = i
+                break
 
-            if len(moves[(p, q)]) == 0:
-                animal = self.getRandomPiece()
-                p, q = self.randomlyPlace()
-                if p is None and q is None or animal is False:
-                    return None
-
-                return [animal, None, None, p, q]
-            newP, newQ = moves[i][random.randint(0, len(moves[(p, q)]) - 1)]
-            animal = self.board[p][q][-1]
-            return [animal, p, q, newP, newQ]
+        if len(moves[(p, q)]) == 0:
+            return None
+        newP, newQ = moves[i][random.randint(0, len(moves[(p, q)]) - 1)]
+        animal = self.board[p][q][-1]
+        return [animal, p, q, newP, newQ]
 
 
 def updatePlayers(move, activePlayer, passivePlayer):
@@ -596,7 +626,7 @@ if __name__ == "__main__":
             file.write(f"{P1.board}")
         # print(P1.board)
         move = P1.move()
-        # print(moveIdx, "P1 returned", move, P1.isUpper)
+        # print(moveIdx, "P1 returned", move)
         updatePlayers(move, P1, P2)  # update P1 and P2 according to the move
         filename = "moves/move-{:03d}-player1.png".format(moveIdx)
         # filename = "progress.png"
