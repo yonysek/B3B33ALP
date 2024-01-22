@@ -10,7 +10,7 @@ smallFigures = {
 }
 bigFigures = {figure.upper(): smallFigures[figure] for figure in smallFigures}
 
-self = Player("player1", False, 13, bigFigures, smallFigures)
+self = Player("player1", True, 13, smallFigures, bigFigures)
 
 self.board = {
     -6: {12: ""},
@@ -68,9 +68,9 @@ self.board = {
         3: "",
         4: "",
         5: "",
-        6: "g",
-        7: "",
-        8: "",
+        6: "",
+        7: "QB",
+        8: "GB",
         9: "",
         10: "",
         11: "",
@@ -84,8 +84,8 @@ self.board = {
         4: "",
         5: "",
         6: "g",
-        7: "G",
-        8: "s",
+        7: "",
+        8: "",
         9: "",
         10: "",
         11: "",
@@ -97,9 +97,9 @@ self.board = {
         2: "",
         3: "",
         4: "",
-        5: "",
-        6: "",
-        7: "Q",
+        5: "a",
+        6: "q",
+        7: "b",
         8: "",
         9: "",
         10: "",
@@ -111,10 +111,10 @@ self.board = {
         1: "",
         2: "",
         3: "",
-        4: "q",
-        5: "A",
-        6: "B",
-        7: "A",
+        4: "b",
+        5: "a",
+        6: "s",
+        7: "",
         8: "",
         9: "",
         10: "",
@@ -127,9 +127,9 @@ self.board = {
         2: "",
         3: "",
         4: "",
-        5: "a",
+        5: "",
         6: "",
-        7: "a",
+        7: "",
         8: "",
         9: "",
         10: "",
@@ -156,14 +156,14 @@ self.board = {
     11: {0: "", 1: "", 2: "", 3: ""},
     12: {0: "", 1: ""},
 }
-self.myMove = 9
-self.myPieces = {"Q": 0, "A": 0, "B": 1, "S": 2, "G": 1}
-self.rivalPieces = {"q": 0, "a": 0, "b": 2, "s": 1, "g": 0}
+self.myMove = 6
+self.myPieces = {"Q": 0, "A": 2, "B": 0, "S": 2, "G": 1}
+self.rivalPieces = {"q": 0, "a": 0, "b": 0, "s": 1, "g": 1}
 self.myColorIsUpper = True
 self.tournament = True
-self.saveImage("original.png")
 
-P2 = Player("player2", False, 13, smallFigures, bigFigures)
+
+P2 = Player("player2", False, 13, bigFigures, smallFigures)
 
 steps = 0
 while steps < 100:

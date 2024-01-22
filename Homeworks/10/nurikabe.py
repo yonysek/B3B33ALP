@@ -2,9 +2,10 @@
 import sys
 import copy
 
-sys.setrecursionlimit(5000)
+# sys.setrecursionlimit(5000)
 
-s = 0
+s = 69
+
 if s == 0:
     with open(
         "/Users/yonysek/Library/CloudStorage/GoogleDrive-vybirjon@fel.cvut.cz/My Drive/Winter 2023:24/B3B33ALP/Homeworks/10/board.txt",
@@ -567,8 +568,6 @@ def OPpassiveGameLoop(board, check=False):
 OPpassiveGameLoop(board)
 # printBoard(board)
 
-# TODO It is now time to do the fucking bullshit which I'm not ready for, therefore me be going to sleep with the wish to never wake up again.
-
 
 def numberOfExpansions(expansions):
     num = 0
@@ -583,10 +582,9 @@ def doExpansion(board, island, expansion, check=False):
     newBoard = copy.deepcopy(board)
     i, j = expansion
     newBoard[i][j] = island
-    islandsBackup = copy.deepcopy(islands)
     islands = createIslands(newBoard)
     passiveGameLoop(newBoard, check)
-    return newBoard, islandsBackup
+    return newBoard
 
 
 # printBoard(board)
@@ -671,43 +669,32 @@ def activeGameLoop(steps=0):
 
     board, islands, posExp = getFromStepDict(steps)
 
-    newBoard = copy.deepcopy(board)
+    for island in posExp:
+        for expansion in posExp[island]:
+            newBoard = copy.deepcopy(board)
 
-    bestExpansion = getBestExpansion(newBoard, posExp)
+            # printBoard(newBoard)
+            newBoard = doExpansion(newBoard, island, expansion)
 
-    if len(bestExpansion) == 0:
-        activeGameLoop(steps - 1)
+            if newBoard in triedBoards:
+                continue
 
-    # print(
-    #     f"step {steps} exp {bestExpansion} posExp {posExp[list(bestExpansion.keys())[0]]}"
-    # )
-    island, expansion = filterExpansions(bestExpansion, posExp)
+            triedBoards.append(newBoard)
 
-    newBoard, islandsBackup = doExpansion(newBoard, island, expansion)
+            # printBoard(newBoard)
 
-    if newBoard in triedBoards:
-        activeGameLoop(steps)
+            if gameOver(newBoard):
+                printFinalBoard(newBoard)
+                quit()
 
-    triedBoards.append(newBoard)
+            newPosExp = allPossibleExpansions(newBoard)
 
-    # print(f"step {steps} exp {bestExpansion} posExp {posExp[island]}")
-    # printBoard(newBoard)
-    # print(stepDict)
+            if numberOfExpansions(newPosExp) == 0:
+                continue
 
-    if gameOver(newBoard):
-        printFinalBoard(newBoard)
-        quit()
+            addToStepDict(steps + 1, newBoard, islands, newPosExp)
 
-    newPosExp = allPossibleExpansions(newBoard)
-
-    if numberOfExpansions(newPosExp) == 0:
-        activeGameLoop(steps)
-
-    steps += 1
-
-    addToStepDict(steps, newBoard, islands, newPosExp)
-
-    activeGameLoop(steps)
+            activeGameLoop(steps + 1)
 
 
 if gameOver(board):
